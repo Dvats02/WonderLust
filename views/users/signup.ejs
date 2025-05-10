@@ -1,0 +1,32 @@
+<% layout("/Layouts/BoilerPlate") %>
+
+<h1>SignUp On WonderLust</h1>
+<form action="/Newsignup" method="post" class="needs-validation" novalidate>
+    <div class="col-md-6">
+        <label for="username" class="form-label">Username</label>
+        <input name="user[username]" type="text" class="form-control" id="username" placeholder="Enter username" required>
+        <div class="invalid-feedback">
+            Please enter a valid username.
+        </div>
+    </div>
+
+    <div class="col-md-6 mt-3">
+        <label for="email" class="form-label">Email</label>
+        <input name="user[email]" type="email" class="form-control" id="email" placeholder="Enter email" required>
+        <div class="invalid-feedback">
+            Please enter a valid email address.
+        </div>
+    </div>
+
+    <div class="col-md-6 mt-3">
+        <label for="password" class="form-label">Password</label>
+        <input name="user[password]" type="password" class="form-control" id="password" placeholder="Enter password" required>
+        <div class="invalid-feedback">
+            Please enter a valid password.
+        </div>
+    </div>
+
+    <div class="col-md-6 mt-4">
+        <button type="submit" class="btn btn-primary">Sign Up</button>
+    </div>
+</form>

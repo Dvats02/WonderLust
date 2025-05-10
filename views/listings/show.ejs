@@ -1,0 +1,199 @@
+<% layout("layouts/BoilerPlate") %>
+
+<div class="container my-5">
+  <div class="row">
+    <!-- Left Column - Image and Details -->
+    <div class="col-md-8">
+      <div class="listing-main mb-4">
+        <div class="listing-header d-flex justify-content-between align-items-center mb-3">
+          <h2 class="fw-bold mb-0"><%= ListData.title %></h2>
+          <span class="badge bg-success px-3 py-2 rounded-pill"><%= ListData.country %></span>
+        </div>
+        
+        <div class="listing-image-container position-relative mb-4">
+          <img src="<%= ListData.image %>" alt="<%= ListData.title %>" class="img-fluid rounded shadow w-100" style="object-fit: cover; height: 400px;">
+          <div class="listing-location position-absolute bottom-0 start-0 m-3 px-3 py-2 bg-dark bg-opacity-75 text-white rounded-pill">
+            <i class="fas fa-map-marker-alt me-2"></i><%= ListData.location %>
+          </div>
+        </div>
+
+        <div class="listing-description mb-4">
+          <h4 class="border-bottom pb-2 mb-3">About this place</h4>
+          <p class="lead"><%= ListData.description %></p>
+        </div>
+      </div>
+
+      <!-- Reviews Section -->
+      <div class="reviews-section mt-5">
+        <h3 class="border-bottom pb-2 mb-4">Reviews & Ratings</h3>
+        
+        <% if(currentUser){ %>
+          <div class="add-review-card mb-5">
+            <h4 class="mb-3">Leave a Review</h4>
+            <form method="POST" action="/Listings/<%= ListData._id %>/reviews" class="review-form p-4 rounded">
+              <div class="mb-3">
+                <label class="form-label fw-bold">Rating</label>
+                <div class="star-rating">
+                  <% for (let i = 5; i >= 1; i--) { %>
+                    <input type="radio" id="star<%= i %>" name="review[rating]" value="<%= i %>">
+                    <label for="star<%= i %>"><i class="fas fa-star"></i></label>
+                  <% } %>
+                </div>
+              </div>
+              <div class="mb-3">
+                <label for="comment" class="form-label fw-bold">Your Experience</label>
+                <textarea name="review[comment]" id="comment" cols="30" rows="4" class="form-control" placeholder="Share your experience staying here..."></textarea>
+              </div>
+              <button class="btn btn-primary"><i class="fas fa-paper-plane me-2"></i>Submit Review</button>
+            </form>
+          </div>
+        <% } else { %>
+          <div class="alert alert-info mb-4">
+            <i class="fas fa-info-circle me-2"></i> Please <a href="/login">log in</a> to leave a review.
+          </div>
+        <% } %>
+
+        <% if(ListData.reviews.length > 0) { %>
+          <div class="row" id="reviews-container">
+            <% ListData.reviews.forEach(review => { %>
+              <div class="col-md-6 mb-4">
+                <div class="review-card h-100 position-relative">
+                  <div class="review-header d-flex justify-content-between align-items-center mb-2">
+                    <div class="review-rating">
+                      <% for(let i = 0; i < review.rating; i++) { %>
+                        <i class="fas fa-star"></i>
+                      <% } %>
+                      <% for(let i = review.rating; i < 5; i++) { %>
+                        <i class="far fa-star"></i>
+                      <% } %>
+                    </div>
+                    <small class="text-muted">
+                      <i class="far fa-calendar-alt me-1"></i> Recently
+                    </small>
+                  </div>
+                  <div class="reviewer mb-2">
+                    <i class="fas fa-user-circle me-2"></i>Guest
+                  </div>
+                  <p class="review-comment mb-4">"<%= review.comment %>"</p>
+                  
+                  <% if(currentUser && currentUser._id.equals(review.author)) { %>
+                    <form method="POST" action="/Listings/<%= ListData._id %>/reviews/<%= review._id %>?_method=DELETE" class="position-absolute bottom-0 end-0 mb-3 me-3">
+                      <button class="btn btn-sm btn-outline-danger"><i class="fas fa-trash me-1"></i>Delete</button>
+                    </form>
+                  <% } %>
+                </div>
+              </div>
+            <% }) %>
+          </div>
+        <% } else { %>
+          <div class="text-center py-5">
+            <i class="far fa-comment-dots fa-3x mb-3 text-muted"></i>
+            <h5 class="text-muted">No reviews yet</h5>
+            <p>Be the first to share your experience!</p>
+          </div>
+        <% } %>
+      </div>
+    </div>
+
+    <!-- Right Column - Pricing and Action Buttons -->
+    <div class="col-md-4">
+      <div class="card sticky-top" style="top: 2rem;">
+        <div class="card-body">
+          <h4 class="card-title fw-bold text-center mb-4 border-bottom pb-3">
+            <span class="fs-3 text-primary">₹<%= ListData.price.toLocaleString("en-IN") %></span>
+            <span class="fs-5 text-muted">/night</span>
+          </h4>
+          
+          <div class="mb-4">
+            <div class="d-grid gap-2">
+              <button class="btn btn-lg btn-success"><i class="fas fa-calendar-check me-2"></i>Book Now</button>
+              <button class="btn btn-outline-secondary"><i class="far fa-heart me-2"></i>Save to Wishlist</button>
+            </div>
+          </div>
+
+          <div class="listing-details">
+            <div class="detail-item d-flex align-items-center mb-3">
+              <i class="fas fa-user-circle fs-4 me-3 text-secondary"></i>
+              <div>
+                <p class="mb-0">Hosted by</p>
+                <h6 class="mb-0"><%= ListData.owner.username %></h6>
+              </div>
+            </div>
+            
+            <div class="detail-item d-flex align-items-center mb-3">
+              <i class="fas fa-map-marked-alt fs-4 me-3 text-secondary"></i>
+              <div>
+                <p class="mb-0">Location</p>
+                <h6 class="mb-0"><%= ListData.location %>, <%= ListData.country %></h6>
+              </div>
+            </div>
+
+            <div class="detail-item d-flex align-items-center mb-3">
+              <i class="fas fa-shield-alt fs-4 me-3 text-secondary"></i>
+              <div>
+                <h6 class="mb-0">Safe Booking Guarantee</h6>
+                <p class="mb-0 small text-muted">24/7 Support, Secure Payments</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Owner Actions -->
+      <% if(currentUser && currentUser._id.equals(ListData.owner._id)) { %>
+        <div class="owner-actions mt-4">
+          <div class="card">
+            <div class="card-header bg-light">
+              <h5 class="mb-0">Listing Management</h5>
+            </div>
+            <div class="card-body">
+              <div class="d-grid gap-2">
+                <a href="/Listings/<%= ListData._id %>/edit" class="btn btn-warning">
+                  <i class="fas fa-edit me-2"></i>Edit Listing
+                </a>
+                <form method="POST" action="/Listings/<%= ListData._id %>?_method=DELETE">
+                  <button type="submit" class="btn btn-danger w-100">
+                    <i class="fas fa-trash-alt me-2"></i>Delete Listing
+                  </button>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      <% } %>
+    </div>
+  </div>
+</div>
+
+
+<!-- Map Section -->
+
+    <div class="container">
+      <div id="map" class="rounded" style="height: 400px;" data-location="<%= ListData.location %>, <%= ListData.country %>"></div>
+    </div>
+  
+  
+  <% if (relatedListings && relatedListings.length > 0) { %> <div class="container my-5">
+      <hr> <h3 class="mb-4">You might also like</h3>
+      <div class="row row-cols-1 row-cols-md-3 g-4">
+        <% relatedListings.forEach(listing => { %> <div class="col">
+            <a href="/Listings/<%= listing._id %>" class="card-link text-decoration-none text-dark"> <div class="card listing-card h-100 border-0 shadow-sm related-listing-card"> <img
+                  src="<%= listing.image && listing.image.url ? listing.image.url : '/images/default-listing.jpg' %>" class="card-img-top"
+                  alt="<%= listing.title %>"
+                  style="height: 200px; object-fit: cover;">
+                <div class="card-body">
+                  <h5 class="card-title fw-bold"><%= listing.title %></h5>
+                  <p class="card-text mb-1">
+                    <i class="fas fa-map-marker-alt me-1 text-secondary"></i><%= listing.location %>, <%= listing.country %>
+                  </p>
+                  <p class="card-text">
+                    <span class="fw-bold">₹<%= listing.price.toLocaleString("en-IN") %></span> / night
+                  </p>
+                </div>
+              </div>
+            </a>
+          </div>
+        <% }) %>
+      </div>
+    </div>
+  <% } %>
