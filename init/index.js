@@ -18,12 +18,12 @@ async function main(){
 
 const initDb = async () => {
     await Listing.deleteMany({});
+    console.log("Data Deleted succesfully");
+    // initData.data = initData.data.map((obj) => ({
+    //   ...obj,
+    //   owner: new mongoose.Types.ObjectId("67c30b81173371191ef9debe")
+    // }));
     
-    initData.data = initData.data.map((obj) => ({
-      ...obj,
-      owner: new mongoose.Types.ObjectId("67c30b81173371191ef9debe")
-    }));
-    
-    await Listing.insertMany(initData.data);
-    console.log("Data was initialized");
+    // await Listing.insertMany(initData.data);
+    // console.log("Data was initialized");
   };
