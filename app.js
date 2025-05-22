@@ -17,6 +17,7 @@ const passport = require("passport");
 const LocalStrategy = require("passport-local");
 const crypto = require("crypto"); // 🔹 Added for token generation
 
+
 // Middleware
 app.use(methodOverride("_method"));
 app.engine("ejs", ejsMate);
