@@ -447,6 +447,260 @@
     border-top: 1px solid var(--light-gray);
     margin: 4px 0;
   }
+
+  /* Show Page Specific Styles */
+  .hero-image {
+    filter: brightness(0.9);
+  }
+  
+  .content-card {
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    border: 1px solid rgba(0,0,0,0.05);
+  }
+  
+  .content-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(0,0,0,0.1) !important;
+  }
+  
+  .booking-card {
+    border: 1px solid rgba(0,0,0,0.08);
+  }
+  
+  .star-rating label {
+    transition: all 0.2s ease;
+  }
+  
+  .star-rating label:hover {
+    transform: scale(1.1);
+  }
+  
+  .star-rating label i {
+    transition: all 0.2s ease;
+  }
+  
+  .related-card:hover .card-img-top {
+    transform: scale(1.05);
+  }
+  
+  .related-card:hover .image-overlay {
+    opacity: 0.1;
+  }
+  
+  .feature-item {
+    transition: background-color 0.2s ease;
+  }
+  
+  .feature-item:hover {
+    background-color: rgba(102, 126, 234, 0.1) !important;
+  }
+  
+  .review-item {
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    border: 1px solid rgba(0,0,0,0.05);
+  }
+  
+  .review-item:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+  }
+  
+  .btn {
+    transition: all 0.2s ease;
+  }
+  
+  .btn:hover {
+    transform: translateY(-1px);
+  }
+  
+  /* Hero Section Styles */
+  .hero-section {
+    position: relative;
+    margin-bottom: 2.5rem;
+  }
+
+  .hero-image-container {
+    position: relative;
+    overflow: hidden;
+    border-radius: var(--radius-lg);
+  }
+
+  .hero-overlay {
+    background: linear-gradient(transparent 40%, rgba(0,0,0,0.7));
+  }
+
+  .hero-content {
+    padding: 2rem;
+  }
+
+  .location-badge {
+    background-color: rgba(0,0,0,0.5) !important;
+    padding: 0.5rem 1rem;
+    border-radius: var(--radius-pill);
+  }
+
+  /* Map Section */
+  .map-section {
+    background-color: var(--light-gray);
+    padding: 3rem 0;
+    margin-top: 3rem;
+  }
+
+  #map {
+    height: 450px;
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-lg);
+  }
+
+  /* Related Listings Section */
+  .related-section {
+    padding: 3rem 0;
+  }
+
+  .related-card {
+    background-color: white;
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-sm);
+    overflow: hidden;
+    height: 100%;
+    position: relative;
+    transition: all 0.3s ease;
+  }
+
+  .related-card:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--shadow-md);
+  }
+
+  .card-image-container {
+    position: relative;
+    overflow: hidden;
+  }
+
+  .card-image-container img {
+    height: 250px;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+  }
+
+  .image-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.1);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+
+  /* Section Headers */
+  .section-header {
+    margin-bottom: 2rem;
+  }
+
+  .accent-line {
+    height: 3px;
+    width: 60px;
+    background-color: var(--primary-color);
+    border-radius: var(--radius-pill);
+  }
+
+  /* Host Card */
+  .host-card {
+    display: flex;
+    align-items: center;
+    padding: 1.5rem;
+    background-color: var(--light-gray);
+    border-radius: var(--radius-md);
+  }
+
+  .host-avatar {
+    width: 60px;
+    height: 60px;
+    background-color: var(--primary-color);
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+    margin-right: 1rem;
+  }
+
+  /* Review Form Card */
+  .review-form-card {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border-radius: var(--radius-md);
+    padding: 2rem;
+    margin-bottom: 2rem;
+  }
+
+  /* No Reviews State */
+  .no-reviews {
+    text-align: center;
+    padding: 3rem 0;
+  }
+
+  .no-reviews-icon {
+    margin-bottom: 1rem;
+  }
+
+  .no-reviews-icon i {
+    font-size: 4rem;
+    color: var(--mid-gray);
+    opacity: 0.5;
+  }
+
+  /* Price Display */
+  .price-display {
+    display: flex;
+    align-items: baseline;
+    justify-content: center;
+    gap: 0.5rem;
+  }
+
+  .price-tag {
+    display: flex;
+    align-items: baseline;
+    gap: 0.25rem;
+  }
+
+  /* Owner Panel */
+  .owner-panel {
+    background-color: white;
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-sm);
+    overflow: hidden;
+  }
+
+  .owner-panel .card-header {
+    background: linear-gradient(135deg, #ff7675, #d63031) !important;
+    color: white;
+    padding: 1.5rem;
+    border-bottom: none;
+  }
+
+  /* Feature Items */
+  .listing-features .feature-item {
+    display: flex;
+    align-items: center;
+    padding: 1.5rem;
+    margin-bottom: 1rem;
+    background-color: var(--light-gray);
+    border-radius: var(--radius-md);
+    transition: background-color 0.2s ease;
+  }
+
+  .feature-icon {
+    width: 45px;
+    height: 45px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    margin-right: 1rem;
+  }
   
   /* Responsive adjustments */
   @media (max-width: 992px) {
@@ -492,6 +746,22 @@
     .search-button {
       margin: 8px 16px;
     }
+
+    .hero-image {
+      height: 40vh !important;
+    }
+    
+    .display-4 {
+      font-size: 2rem !important;
+    }
+    
+    .display-5 {
+      font-size: 2.5rem !important;
+    }
+
+    .hero-content {
+      padding: 1rem;
+    }
   }
   
   @media (max-width: 576px) {
@@ -505,6 +775,18 @@
     
     .detail-item i {
       width: 24px;
+    }
+
+    .section-header {
+      margin-bottom: 1.5rem;
+    }
+
+    .related-section {
+      padding: 2rem 0;
+    }
+
+    .map-section {
+      padding: 2rem 0;
     }
   }
   
@@ -540,12 +822,15 @@
   #reviews-container::-webkit-scrollbar-thumb:hover {
     background: var(--dark-gray);
   }
+
   .listing-card img {
     transition: transform 0.2s ease-in-out;
   }
+
   .listing-card:hover img {
     transform: scale(1.03);
   }
-  .related-listing-card { /* Example styling */
+
+  .related-listing-card {
     /* Add any specific styles if needed */
   }
