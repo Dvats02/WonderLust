@@ -1,0 +1,20 @@
+<%- include("../Layouts/BoilerPlate") %>
+    <title>User Listings</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>User Listings</h1>
+        <% if (listings.length > 0) { %>
+            <ul>
+                <% for (let listing of listings) { %>
+<li><a href="/Listings/<%= listing._id %>"><%= listing.title %></a></li>
+                <% } %>
+            </ul>
+        <% } else { %>
+            <p>You haven't added any listings yet.</p>
+        <% } %>
+    </div>
+    <%- include("../includes/footer") %>
+</body>
+</html>
