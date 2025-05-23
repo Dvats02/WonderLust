@@ -1,0 +1,27 @@
+<% layout("layouts/BoilerPlate") %>
+
+<div class="container">
+  <h1>Wishlist</h1>
+
+  <% if (wishlistItems && wishlistItems.length > 0) { %>
+    <div class="row">
+      <% wishlistItems.forEach(item => { %>
+        <% item.places.forEach(place => { %>
+          <div class="col-md-4">
+            <div class="card">
+              <img src="<%= place.image_url %>" class="card-img-top" alt="<%= place.name %>">
+              <div class="card-body">
+                <h5 class="card-title"><%= place.name %></h5>
+                <p class="card-text"><%= place.location %></p>
+                <p class="card-text"><%= place.description %></p>
+                <a href="/Listings/<%= place.place_id %>" class="btn btn-primary">View Listing</a>
+              </div>
+            </div>
+          </div>
+        <% }) %>
+      <% }) %>
+    </div>
+  <% } else { %>
+    <p>Your wishlist is empty.</p>
+  <% } %>
+</div>

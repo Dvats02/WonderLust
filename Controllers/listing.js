@@ -1,14 +1,34 @@
 const Listing = require("../Models/listing.js");
+const Wishlist = require("../Models/Wishlist.js");
 
+/**
+ * @description Get all listings
+ * @param {object} req - Express request object
+ * @param {object} res - Express response object
+ * @returns {Promise<void>}
+ */
 module.exports.index = async (req, res) => {
     const allListings = await Listing.find({});
     res.render("listings/index.ejs", { allListings });
-}
+};
 
+/**
+ * @description Render the new listing form
+ * @param {object} req - Express request object
+ * @param {object} res - Express response object
+ * @returns {Promise<void>}
+ */
 module.exports.renderNewForm = (req, res) => {
     res.render("listings/new.ejs");
-}
+};
 
+/**
+ * @description Show a specific listing
+ * @param {object} req - Express request object
+ * @param {object} res - Express response object
+ * @param {function} next - Express next middleware function
+ * @returns {Promise<void>}
+ */
 module.exports.showRoute = async (req, res, next) => {
     try {
         const listing = await Listing.findById(req.params.id)
@@ -30,9 +50,16 @@ module.exports.showRoute = async (req, res, next) => {
             _id: { $ne: listing._id }
         }).limit(3);
 
+        let isInWishlist = false;
+        if (req.user) {
+            const wishlistItems = await Wishlist.find({ user_id: req.user._id });
+            isInWishlist = wishlistItems.some(item => item.places.some(place => place.place_id === listing._id.toString()));
+        }
+
         res.render("listings/show.ejs", {
             ListData: listing,
-            relatedListings: relatedListings
+            relatedListings: relatedListings,
+            isInWishlist: isInWishlist
         });
 
     } catch (err) {
@@ -42,7 +69,12 @@ module.exports.showRoute = async (req, res, next) => {
     }
 };
 
-
+/**
+ * @description Create a new listing
+ * @param {object} req - Express request object
+ * @param {object} res - Express response object
+ * @returns {Promise<void>}
+ */
 module.exports.createRoute = async (req, res) => {
     const newlisting = new Listing(req.body.listing);
     newlisting.owner = req.user._id;
@@ -63,15 +95,26 @@ module.exports.createRoute = async (req, res) => {
     res.redirect("/Listings");
 };
 
-module.exports.Edit_Route = async (req, res) => {
-    console.log("This is an edit route");
+/**
+ * @description Render the edit listing form
+ * @param {object} req - Express request object
+ * @param {object} res - Express response object
+ * @returns {Promise<void>}
+ */
+module.exports.editRoute = async (req, res) => {
     let { id } = req.params;
     const listing = await Listing.findById(id);
     res.render("listings/edit.ejs", { listing });
-}
+};
 
-module.exports.Update_Route = async (req, res) => {
-    let { id } = req.params;
+/**
+ * @description Update a specific listing
+ * @param {object} req - Express request object
+ * @param {object} res - Express response object
+ * @returns {Promise<void>}
+ */
+module.exports.updateRoute = async (req, res) => {
+    let { id: listingId } = req.params;
     let updatedData = req.body.listing;
 
     // Construct the image object correctly for updates
@@ -79,19 +122,24 @@ module.exports.Update_Route = async (req, res) => {
         updatedData.image = { url: updatedData.image, filename: 'default' }; // Assuming 'default' for now
     } else {
         // If no new image provided, fetch existing to retain its URL
-        const existingListing = await Listing.findById(id);
+        const existingListing = await Listing.findById(listingId);
         updatedData.image = existingListing.image || { url: "https://plus.unsplash.com/premium_photo-1661963123153-5471a95b7042?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8aG90ZWxzJTIwaW1hZ2VzfGVufDB8fDB8fHww", filename: 'default' };
     }
 
-    await Listing.findByIdAndUpdate(id, { ...updatedData });
+    await Listing.findByIdAndUpdate(listingId, { ...updatedData });
     req.flash("success", "Listing Updated Successfully!");
-    res.redirect(`/Listings/${id}`);
-}
+    res.redirect(`/Listings/${listingId}`);
+};
 
-module.exports.Delete_Route = async (req, res) => {
-    console.log("Delete Route is called");
-    let { id } = req.params;
-    await Listing.findByIdAndDelete(id);
+/**
+ * @description Delete a specific listing
+ * @param {object} req - Express request object
+ * @param {object} res - Express response object
+ * @returns {Promise<void>}
+ */
+module.exports.deleteRoute = async (req, res) => {
+    let { id: listingId } = req.params;
+    await Listing.findByIdAndDelete(listingId);
     req.flash("success", "Listing Deleted Successfully!");
     res.redirect("/Listings");
-}
+};

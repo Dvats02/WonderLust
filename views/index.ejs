@@ -1,0 +1,116 @@
+<% layout("/Layouts/BoilerPlate") %>
+
+<style>
+    /* Hero Section Styles */
+    .hero {
+        background-image: url('https://images.unsplash.com/photo-1616588589676-623b14ff21a8?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8cmVudGFsJTIwaG9tZXxlbnwwfHwwfHx8MA%3D%3D&auto=format&fit=crop&w=800&q=60'); /* Replace with your image URL */
+        background-size: cover;
+        background-position: center;
+        color: white;
+        text-align: center;
+        padding: 100px 0;
+        position: relative;
+    }
+
+    .hero::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5); /* Adjust the overlay opacity here */
+    }
+
+    .hero-content {
+        position: relative;
+        z-index: 1;
+    }
+
+    .hero h1 {
+        font-size: 3em;
+        margin-bottom: 20px;
+    }
+
+    .hero p {
+        font-size: 1.5em;
+        margin-bottom: 30px;
+    }
+
+    /* Featured Listings Styles */
+    .featured-listings {
+        padding: 50px 0;
+        background-color: #f8f9fa;
+    }
+
+    .featured-listings h2 {
+        text-align: center;
+        margin-bottom: 30px;
+    }
+
+    .card {
+        border: none;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        transition: transform 0.3s ease;
+    }
+
+    .card:hover {
+        transform: translateY(-5px);
+    }
+
+    .card-img-top {
+        height: 250px;
+        object-fit: cover;
+    }
+
+    .card-body {
+        background-color: white;
+    }
+
+    /* Footer Styles */
+    .footer {
+        background-color: #343a40;
+        color: white;
+        text-align: center;
+        padding: 20px 0;
+    }
+</style>
+
+<body>
+    <!-- Hero Section -->
+    <div class="hero">
+        <div class="hero-content">
+            <h1>Find Your Perfect Getaway</h1>
+            <p>Discover amazing places to stay and explore.</p>
+            <a href="/Listings/new" class="btn btn-primary btn-lg">List Your Property</a>
+        </div>
+    </div>
+
+    <!-- Featured Listings -->
+    <div class="featured-listings">
+        <div class="container">
+            <h2>Featured Listings</h2>
+            <div class="row row-cols-lg-4 row-cols-md-3 row-cols-sm-1 g-4">
+                <% for (let list of allListings) { %>
+                    <div class="col">
+                        <a href="/Listings/<%= list._id %>" style="text-decoration: none; color: inherit;">
+                            <div class="card h-100 shadow-sm rounded" style="cursor: pointer; overflow: hidden;">
+                                <img src="<%= list.image.url %>" class="card-img-top" alt="listing_image"
+                                    style="height: 250px; object-fit: cover;" />
+                                <div class="card-body bg-white">
+                                    <h5 class="card-title fw-bold mb-2"><%= list.title %></h5>
+                                    <p class="card-text mb-0">• ₹ <%= list.price.toLocaleString("en-IN") %>/Night</p>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                <% } %>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <div class="footer">
+        <p>&copy; 2025 WonderLust. All rights reserved.</p>
+    </div>
+</body>

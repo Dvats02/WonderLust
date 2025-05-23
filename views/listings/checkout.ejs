@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Secure Payment | Wonderlust</title>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 20px;
+        }
+
+        .payment-container {
+            background-color: #ffffff;
+            padding: 40px;
+            border-radius: 16px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+            text-align: center;
+            width: 100%;
+            max-width: 420px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .payment-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #528FF0 0%, #667eea 100%);
+        }
+
+        .brand-header {
+            margin-bottom: 30px;
+        }
+
+        .brand-logo {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, #528FF0, #667eea);
+            border-radius: 12px;
+            margin: 0 auto 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        .payment-container h2 {
+            color: #1a1a1a;
+            margin: 0 0 8px 0;
+            font-size: 1.75em;
+            font-weight: 600;
+            letter-spacing: -0.02em;
+        }
+
+        .payment-subtitle {
+            color: #6b7280;
+            margin-bottom: 30px;
+            font-size: 0.95em;
+            line-height: 1.5;
+        }
+
+        .payment-details {
+            background-color: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 25px;
+            text-align: left;
+        }
+
+        .payment-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+
+        .payment-item:last-child {
+            margin-bottom: 0;
+            padding-top: 12px;
+            border-top: 1px solid #e2e8f0;
+            font-weight: 600;
+            color: #1a1a1a;
+        }
+
+        .payment-item .label {
+            color: #4b5563;
+            font-size: 0.9em;
+        }
+
+        .payment-item .value {
+            color: #1a1a1a;
+            font-weight: 500;
+        }
+
+        #rzp-button1 {
+            background: linear-gradient(135deg, #528FF0 0%, #667eea 100%);
+            color: white;
+            border: none;
+            padding: 16px 32px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            font-weight: 600;
+            margin-top: 10px;
+            cursor: pointer;
+            border-radius: 12px;
+            transition: all 0.3s ease;
+            box-shadow: 0 8px 25px rgba(82, 143, 240, 0.25);
+            width: 100%;
+            position: relative;
+            overflow: hidden;
+        }
+
+        #rzp-button1::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: left 0.5s;
+        }
+
+        #rzp-button1:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 35px rgba(82, 143, 240, 0.4);
+        }
+
+        #rzp-button1:hover::before {
+            left: 100%;
+        }
+
+        #rzp-button1:active {
+            transform: translateY(0);
+            box-shadow: 0 8px 25px rgba(82, 143, 240, 0.25);
+        }
+
+        #rzp-button1:disabled {
+            background: #9ca3af;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        .secure-info {
+            margin-top: 25px;
+            font-size: 0.85em;
+            color: #6b7280;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .secure-icon {
+            width: 16px;
+            height: 16px;
+            background-color: #10b981;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 10px;
+        }
+
+        .trust-badges {
+            margin-top: 20px;
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            opacity: 0.7;
+        }
+
+        .trust-badge {
+            font-size: 0.75em;
+            color: #6b7280;
+            padding: 4px 8px;
+            border: 1px solid #e2e8f0;
+            border-radius: 6px;
+            background-color: #fafafa;
+        }
+
+        .error-message {
+            color: #dc2626;
+            background-color: #fef2f2;
+            border: 1px solid #fecaca;
+            padding: 12px 16px;
+            margin-top: 15px;
+            border-radius: 8px;
+            text-align: left;
+            font-size: 0.9em;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .error-icon {
+            color: #dc2626;
+            font-weight: bold;
+        }
+
+        @media (max-width: 480px) {
+            .payment-container {
+                padding: 30px 25px;
+                margin: 10px;
+            }
+            
+            .payment-details {
+                padding: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="payment-container">
+        <div class="brand-header">
+            <div class="brand-logo">W</div>
+            <h2>Complete Payment</h2>
+            <p class="payment-subtitle">Secure checkout powered by industry-leading encryption</p>
+        </div>
+
+        <div class="payment-details">
+            <div class="payment-item">
+                <span class="label">Booking Amount</span>
+                <span class="value">₹500.00</span>
+            </div>
+            <div class="payment-item">
+                <span class="label">Processing Fee</span>
+                <span class="value">₹0.00</span>
+            </div>
+            <div class="payment-item">
+                <span class="label">Total Amount</span>
+                <span class="value">₹500.00</span>
+            </div>
+        </div>
+
+        <div id="payment-error" class="error-message" style="display: none;">
+            <span class="error-icon">⚠</span>
+            <span></span>
+        </div>
+
+        <button id="rzp-button1">
+            <span>Proceed to Payment</span>
+        </button>
+
+        <div class="secure-info">
+            <div class="secure-icon">🔒</div>
+            <span>256-bit SSL encrypted payment via Razorpay</span>
+        </div>
+
+        <div class="trust-badges">
+            <span class="trust-badge">PCI DSS</span>
+            <span class="trust-badge">SSL Secured</span>
+            <span class="trust-badge">Bank Grade</span>
+        </div>
+    </div>
+
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            let rzp1;
+            const payButton = document.getElementById('rzp-button1');
+            const paymentErrorDiv = document.getElementById('payment-error');
+            const errorText = paymentErrorDiv.querySelector('span:last-child');
+
+            function displayError(message) {
+                errorText.textContent = message;
+                paymentErrorDiv.style.display = 'flex';
+                payButton.disabled = true;
+                payButton.innerHTML = '<span>Payment Error</span>';
+            }
+
+            function hideError() {
+                paymentErrorDiv.style.display = 'none';
+            }
+
+            // Initially disable the button until Razorpay is ready
+            payButton.disabled = true;
+            payButton.innerHTML = '<span>Initializing...</span>';
+
+            fetch("/api/createOrder", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ amount: 50000 })
+            })
+            .then(res => {
+                if (!res.ok) {
+                    return res.text().then(text => { throw new Error(text || "Server error occurred") });
+                }
+                return res.json();
+            })
+            .then(order => {
+                if (order.error) {
+                    console.error("Error creating order:", order.error);
+                    displayError("Could not initiate payment: " + order.error);
+                    return;
+                }
+
+                const options = {
+                    "key": "rzp_test_rxowtXdjKVLCPU",
+                    "amount": order.amount,
+                    "currency": "INR",
+                    "name": "Wonderlust",
+                    "description": "Booking Payment",
+                    "image": "https://via.placeholder.com/100.png?text=Logo",
+                    "order_id": order.id,
+                    "handler": function (response) {
+                        hideError();
+                        payButton.innerHTML = '<span>Verifying Payment...</span>';
+                        payButton.disabled = true;
+
+                        fetch("/api/paymentVerify", {
+                            method: "POST",
+                            headers: { "Content-Type": "application/json" },
+                            body: JSON.stringify(response)
+                        })
+                        .then(res => res.json())
+                        .then(data => {
+                            if (data.status === "success") {
+                                payButton.innerHTML = '<span>Payment Successful ✓</span>';
+                                setTimeout(() => {
+                                    window.location.href = "/success";
+                                }, 1000);
+                            } else {
+                                displayError("Payment failed: " + (data.message || "Unknown error"));
+                                payButton.innerHTML = '<span>Try Again</span>';
+                                payButton.disabled = false;
+                            }
+                        })
+                        .catch(error => {
+                            console.error("Error verifying payment:", error);
+                            displayError("Payment verification failed. Check connection.");
+                            payButton.innerHTML = '<span>Try Again</span>';
+                            payButton.disabled = false;
+                        });
+                    },
+                    "prefill": {
+                        "name": "Gaurav Kumar",
+                        "email": "gaurav.kumar@example.com",
+                        "contact": "9000090000"
+                    },
+                    "theme": { "color": "#528FF0" },
+                    "modal": {
+                        "ondismiss": function() {
+                            console.log("Checkout form closed");
+                            payButton.innerHTML = '<span>Proceed to Payment</span>';
+                            payButton.disabled = false;
+                            hideError();
+                        }
+                    }
+                };
+
+                rzp1 = new Razorpay(options);
+
+                // Re-enable button and set its click handler
+                payButton.disabled = false;
+                payButton.innerHTML = '<span>Proceed to Payment</span>';
+
+                payButton.onclick = function(e) {
+                    hideError();
+                    rzp1.open();
+                    e.preventDefault();
+                };
+
+            })
+            .catch(error => {
+                console.error("Error fetching order:", error);
+                displayError("Could not initiate payment: " + (error.message || "Please try again."));
+                payButton.innerHTML = '<span>Retry Setup</span>';
+            });
+        });
+    </script>
+
+</body>
+</html>

@@ -1,41 +1,58 @@
-const mongoose=require("mongoose");
-const Schema=mongoose.Schema;
-const Review=require("./Review.js");
+const mongoose = require("mongoose");
+const Schema = mongoose.Schema;
+const Review = require("./Review.js");
 
+/**
+ * @typedef {object} ListingSchema
+ * @property {string} title - Title of the listing (required)
+ * @property {string} description - Description of the listing
+ * @property {object} image - Image object containing URL and filename
+ * @property {string} image.url - URL of the image (default: unsplash URL)
+ * @property {string} image.filename - Filename of the image
+ * @property {string} location - Location of the listing
+ * @property {string} country - Country of the listing
+ * @property {number} price - Price of the listing
+ * @property {Array<Schema.Types.ObjectId>} reviews - Array of review IDs (references Review model)
+ * @property {Schema.Types.ObjectId} owner - ID of the owner (references User model)
+ */
 const listingSchema = new Schema({
     title: {
         type: String,
-        required: true
+        required: true,
     },
     description: String,
     image: {
-        url: { // Add a nested object for image URL
+        url: {
             type: String,
-            default: "https://plus.unsplash.com/premium_photo-1661963123153-5471a95b7042?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8aG90ZWxzJTIwaW1hZ2VzfGVufDB8fDB8fHww"
+            default:
+                "https://plus.unsplash.com/premium_photo-1661963123153-5471a95b7042?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8aG90ZWxzJTIwaW1hZ2VzfGVufDB8fDB8fHww",
         },
-        filename: String // Add a filename field (useful for later if you use cloud storage)
+        filename: String,
     },
     location: String,
     country: String,
     price: {
-        type:Number,
+        type: Number,
     },
-    reviews: [{
+    reviews: [
+        {
+            type: Schema.Types.ObjectId,
+            ref: "Review",
+        },
+    ],
+    owner: {
         type: Schema.Types.ObjectId,
-        ref: "Review"
-    }],
-    owner:{
-        type: Schema.Types.ObjectId,
-        ref:"User",
+        ref: "User",
     },
-
 });
 
-listingSchema.post("findOneAndDelete", async function(doc) {
+/**
+ * @description Middleware to delete associated reviews when a listing is deleted
+ */
+listingSchema.post("findOneAndDelete", async function (doc) {
     if (doc) {
         await Review.deleteMany({ _id: { $in: doc.reviews } });
     }
 });
 
-const listing=mongoose.model("Listing", listingSchema)
-module.exports= listing;
+module.exports = mongoose.model("Listing", listingSchema);
