@@ -1,20 +1,32 @@
-<%- include("../Layouts/BoilerPlate") %>
-    <title>User Listings</title>
-    <link rel="stylesheet" href="/css/style.css">
-</head>
-<body>
-    <div class="container">
-        <h1>User Listings</h1>
-        <% if (listings.length > 0) { %>
-            <ul>
-                <% for (let listing of listings) { %>
-<li><a href="/Listings/<%= listing._id %>"><%= listing.title %></a></li>
-                <% } %>
-            </ul>
-        <% } else { %>
-            <p>You haven't added any listings yet.</p>
-        <% } %>
-    </div>
-    <%- include("../includes/footer") %>
-</body>
-</html>
+<% layout("/Layouts/BoilerPlate") %>
+
+<div class="container py-5">
+    <h1 class="mb-4">Your Listings</h1>
+
+    <% if (listings.length > 0) { %>
+        <div class="row row-cols-lg-4 row-cols-md-3 row-cols-sm-1 g-4">
+            <% for (let listing of listings) { %>
+                <div class="col">
+                    <a href="/Listings/<%= listing._id %>" style="text-decoration: none; color: inherit;">
+                        <div class="card h-100 shadow-sm rounded" style="cursor: pointer; overflow: hidden;">
+                            <% if(listing.image && listing.image.url) { %>
+                                <img src="<%= listing.image.url %>" class="card-img-top" alt="<%= listing.title %>" style="height: 250px; object-fit: cover;" />
+                            <% } else { %>
+                                <img src="/path/to/placeholder-image.jpg" class="card-img-top" alt="Placeholder Image" style="height: 250px; object-fit: cover;">
+                            <% } %>
+                            <div class="card-body bg-white">
+                                <h5 class="card-title fw-bold mb-2"><%= listing.title %></h5>
+                                <p class="card-text mb-0">• ₹ <%= listing.price.toLocaleString("en-IN") %>/Night</p>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+            <% } %>
+        </div>
+    <% } else { %>
+        <div class="text-center py-5">
+            <p class="fs-5">You haven't added any listings yet.</p>
+            <a href="/Listings/new" class="btn btn-primary mt-3">List your first place</a>
+        </div>
+    <% } %>
+</div>

@@ -24,6 +24,14 @@ router.get("/logout", userController.getLogout);
 
 const { isLoggedIn } = require("../middleware.js");
 
+router.get("/profile", isLoggedIn, (req, res) => {
+    res.render("users/profile.ejs", { user: req.user });
+});
+
 router.get("/user/listings", isLoggedIn, userController.getUserListings);
+
+router.route("/user/change-password")
+    .get(isLoggedIn, userController.getChangePassword)
+    .post(isLoggedIn, wrapAsync(userController.postChangePassword));
 
 module.exports = router;
