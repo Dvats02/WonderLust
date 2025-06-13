@@ -1,0 +1,47 @@
+<% layout("/Layouts/BoilerPlate") %>
+
+<style>
+    .profile-card {
+        max-width: 600px;
+        margin: 2rem auto;
+        border-radius: 15px;
+        box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+        overflow: hidden;
+    }
+    .profile-header {
+        background-color: #f8f9fa;
+        padding: 2rem;
+        text-align: center;
+    }
+    .profile-img {
+        width: 150px;
+        height: 150px;
+        border-radius: 50%;
+        object-fit: cover;
+        border: 5px solid #fff;
+        box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    }
+    .profile-info {
+        padding: 2rem;
+    }
+    .info-item {
+        font-size: 1.1rem;
+    }
+</style>
+
+<div class="container">
+    <div class="card profile-card">
+        <div class="profile-header">
+            <img src="<%= user.profilePicture %>" alt="User Profile Picture" class="profile-img mb-3">
+            <h2 class="fw-bold"><%= user.username %></h2>
+        </div>
+        <div class="card-body profile-info">
+            <h4 class="card-title mb-4">User Information</h4>
+            <a href="/user/change-password" class="btn btn-primary">Change Password</a>
+        </div>
+        <div class="profile-info">
+            <p class="info-item">Email: <%= user.email %></p>
+            <p class="info-item">Joined: <%= user.createdAt ? user.createdAt.toLocaleDateString() : 'N/A' %></p>
+        </div>
+    </div>
+</div>

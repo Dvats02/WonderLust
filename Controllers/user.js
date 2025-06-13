@@ -51,10 +51,20 @@ module.exports.login = (req, res) => {
  * @param {object} res - Express response object
  * @returns {Promise<void>}
  */
-module.exports.postLogin = (req, res) => {
-    const redirectUrl = req.session.redirectUrl || "/Listings";
+module.exports.postLogin = async (req, res, next) => {
+    if (!req.user) {
+        req.flash("error", "Authentication failed. Please try again.");
+        return res.redirect("/login");
+    }
+
+    req.session.user = {
+        _id: req.user._id,
+        email: req.user.email,
+        username: req.user.username,
+    };
     delete req.session.redirectUrl;
-    res.redirect(redirectUrl);
+    console.log("User authenticated successfully:", req.user);
+    res.redirect("/Listings");
 };
 
 /**
@@ -74,13 +84,40 @@ module.exports.getLogout = (req, res, next) => {
     });
 };
 
-module.exports.getUserListings = async (req, res) => {
-    // Assuming you have a way to identify the current user (e.g., using req.user)
+module.exports.getChangePassword = (req, res) => {
+    res.render("users/changePassword.ejs");
+};
+
+module.exports.postChangePassword = async (req, res) => {
+    const { oldPassword, newPassword } = req.body;
     const user = req.user;
 
-    // Fetch the listings associated with the user from the database
-    const listings = await Listing.find({ owner: user._id });
+    try {
+        const isPasswordValid = await user.validatePassword(oldPassword);
+        if (!isPasswordValid) {
+            req.flash("error", "Invalid old password.");
+            return res.redirect("/user/change-password");
+        }
 
-    // Render the listings in a view
-    res.render("users/listings", { listings, body: "" });
+        user.setPassword(newPassword, async (err) => {
+            if (err) {
+                req.flash("error", "Failed to set new password.");
+                return res.redirect("/user/change-password");
+            }
+            await user.save();
+            req.flash("success", "Password changed successfully!");
+            res.redirect("/profile");
+        });
+    } catch (error) {
+        req.flash("error", "An error occurred while changing the password.");
+        res.redirect("/user/change-password");
+    }
+};
+
+module.exports.getUserListings = async (req, res) => {
+    // Fetch the listings associated with the current user
+    const listings = await Listing.find({ owner: req.user._id });
+
+    // Render the listings view and pass the listings data
+    res.render("users/listings", { listings });
 };

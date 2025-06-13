@@ -3,7 +3,7 @@
 <style>
     /* Hero Section Styles */
     .hero {
-        background-image: url('https://images.unsplash.com/photo-1616588589676-623b14ff21a8?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8cmVudGFsJTIwaG9tZXxlbnwwfHwwfHx8MA%3D%3D&auto=format&fit=crop&w=800&q=60'); /* Replace with your image URL */
+        background-image: url('https://images.unsplash.com/photo-1501785888024-9291476ff2c2?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTB8fGhvbGlkYXl8ZW58MHx8MHx8fDA%3D&auto=format&fit=crop&w=800&q=60'); /* Replace with your image URL */
         background-size: cover;
         background-position: center;
         color: white;
@@ -19,7 +19,7 @@
         left: 0;
         width: 100%;
         height: 100%;
-        background-color: rgba(0, 0, 0, 0.5); /* Adjust the overlay opacity here */
+        background-color: rgba(0, 0, 0, 0.3); /* Adjust the overlay opacity here */
     }
 
     .hero-content {
@@ -82,7 +82,7 @@
         <div class="hero-content">
             <h1>Find Your Perfect Getaway</h1>
             <p>Discover amazing places to stay and explore.</p>
-            <a href="/Listings/new" class="btn btn-primary btn-lg">List Your Property</a>
+            <a href="/Listings" class="btn btn-primary btn-lg">Explore Listings</a>
         </div>
     </div>
 
@@ -91,15 +91,15 @@
         <div class="container">
             <h2>Featured Listings</h2>
             <div class="row row-cols-lg-4 row-cols-md-3 row-cols-sm-1 g-4">
-                <% for (let list of allListings) { %>
+                <% for (let i = 0; i < Math.min(allListings.length, 8); i++) { %>
                     <div class="col">
-                        <a href="/Listings/<%= list._id %>" style="text-decoration: none; color: inherit;">
+                        <a href="/Listings/<%= allListings[i]._id %>" style="text-decoration: none; color: inherit;">
                             <div class="card h-100 shadow-sm rounded" style="cursor: pointer; overflow: hidden;">
-                                <img src="<%= list.image.url %>" class="card-img-top" alt="listing_image"
+                                <img src="<%= allListings[i].image.url %>" class="card-img-top" alt="listing_image"
                                     style="height: 250px; object-fit: cover;" />
                                 <div class="card-body bg-white">
-                                    <h5 class="card-title fw-bold mb-2"><%= list.title %></h5>
-                                    <p class="card-text mb-0">• ₹ <%= list.price.toLocaleString("en-IN") %>/Night</p>
+                                    <h5 class="card-title fw-bold mb-2"><%= allListings[i].title %></h5>
+                                    <p class="card-text mb-0">• ₹ <%= allListings[i].price.toLocaleString("en-IN") %>/Night</p>
                                 </div>
                             </div>
                         </a>
@@ -111,6 +111,5 @@
 
     <!-- Footer -->
     <div class="footer">
-        <p>&copy; 2025 WonderLust. All rights reserved.</p>
     </div>
 </body>

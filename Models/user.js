@@ -22,7 +22,7 @@ const userSchema = new mongoose.Schema({
         type: Schema.Types.ObjectId,
         ref: "Wishlist",
     }],
-});
+}, { timestamps: true });
 
 userSchema.plugin(passportLocalMongoose);
 
