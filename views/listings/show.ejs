@@ -1,288 +1,152 @@
 <% layout("layouts/BoilerPlate") %>
 
 <div class="container-fluid px-0">
-  <!-- Hero Section with Image -->
-  <div class="hero-section position-relative mb-5">
-    <div class="hero-image-container">
-      <img src="<%= ListData.image.url %>" alt="<%= ListData.title %>" 
-           class="hero-image w-100" style="height: 60vh; object-fit: cover;">
-      <div class="hero-overlay position-absolute top-0 start-0 w-100 h-100 d-flex align-items-end">
-        <div class="container">
-          <div class="row">
-            <div class="col-12">
-              <div class="hero-content text-white p-4">
-                <div class="d-flex flex-wrap align-items-center gap-3 mb-3">
-                  <span class="badge bg-success bg-opacity-90 px-3 py-2 rounded-pill fs-6">
-                    <i class="fas fa-globe me-2"></i><%= ListData.country %>
-                  </span>
-                  <div class="location-badge px-3 py-2 rounded-pill">
-                    <i class="fas fa-map-marker-alt me-2"></i><%= ListData.location %>
-                  </div>
-                </div>
-                <h1 class="display-4 fw-bold mb-0"><%= ListData.title %></h1>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
+
+  <!-- Hero Image -->
+  <div class="hero-section position-relative mb-4">
+    <img src="<%= ListData.image.url %>" alt="<%= ListData.title %>" class="w-100" style="height: 40vh; object-fit: cover;">
   </div>
 
   <div class="container my-5">
     <div class="row g-4">
+
       <!-- Main Content -->
       <div class="col-lg-8">
-        <!-- Description Section -->
-        <div class="content-card bg-white rounded-4 shadow-sm p-4 mb-4">
-          <div class="section-header mb-4">
-            <h3 class="fw-bold text-dark mb-2">
-              <i class="fas fa-home text-primary me-3"></i>About this place
-            </h3>
-            <div class="accent-line bg-primary rounded"></div>
-          </div>
-          <p class="lead text-muted lh-lg"><%= ListData.description %></p>
-        </div>
 
-        <!-- Host Information -->
-        <div class="content-card bg-white rounded-4 shadow-sm p-4 mb-4">
-          <div class="section-header mb-4">
-            <h3 class="fw-bold text-dark mb-2">
-              <i class="fas fa-user-circle text-primary me-3"></i>Meet your host
-            </h3>
-            <div class="accent-line bg-primary rounded"></div>
-          </div>
-          <div class="host-card d-flex align-items-center p-3 bg-light rounded-3">
-            <div class="host-avatar bg-primary text-white rounded-circle d-flex align-items-center justify-content-center me-3">
+        <!-- About Section -->
+        <section class="content-card p-4 mb-4 border rounded-4">
+          <h3 class="fw-bold mb-3"><i class="fas fa-home text-primary me-2"></i>About this place</h3>
+          <p class="text-muted"><%= ListData.description %></p>
+        </section>
+
+        <!-- Host Info -->
+        <section class="content-card p-4 mb-4 border rounded-4">
+          <h3 class="fw-bold mb-3"><i class="fas fa-user-circle text-primary me-2"></i>Your Host</h3>
+          <div class="d-flex align-items-center bg-light p-3 rounded-3">
+            <div class="bg-primary text-white rounded-circle d-flex align-items-center justify-content-center me-3" style="width: 40px; height: 40px;">
               <i class="fas fa-user"></i>
             </div>
             <div>
-              <h5 class="mb-1 fw-bold"><%= ListData.owner.username %></h5>
-              <p class="text-muted mb-0">Property Host</p>
+              <h5 class="mb-0"><%= ListData.owner.username %></h5>
+              <small class="text-muted">Property Host</small>
             </div>
           </div>
-        </div>
+        </section>
 
-        <!-- Reviews Section -->
-        <div class="content-card bg-white rounded-4 shadow-sm p-4">
-          <div class="section-header mb-4">
-            <h3 class="fw-bold text-dark mb-2">
-              <i class="fas fa-star text-warning me-3"></i>Reviews & Ratings
-            </h3>
-            <div class="accent-line bg-warning rounded"></div>
-          </div>
-          
-          <% if(currentUser){ %>
-            <div class="review-form-card rounded-3 p-4 mb-4">
-              <h4 class="text-white mb-3">
-                <i class="fas fa-pen-alt me-2"></i>Share Your Experience
-              </h4>
-              <form method="POST" action="/Listings/<%= ListData._id %>/reviews" class="review-form">
-                <div class="mb-3">
-                  <label class="form-label fw-bold text-white mb-3">Rating</label>
-                  <div class="star-rating d-flex gap-2" id="starRating">
-                    <% for (let i = 1; i <= 5; i++) { %>
-                      <input type="radio" id="star<%= i %>" name="review[rating]" value="<%= i %>" class="d-none">
-                      <label for="star<%= i %>" class="star-label" style="font-size: 28px; cursor: pointer; color: #ffc107;">
-                        <i class="far fa-star" data-rating="<%= i %>"></i>
-                      </label>
+        <!-- Reviews -->
+        <section class="content-card p-4 border rounded-4">
+          <h3 class="fw-bold mb-3"><i class="fas fa-star text-warning me-2"></i>Reviews</h3>
+
+          <% if (currentUser) { %>
+          <!-- Review Form -->
+          <form method="POST" action="/Listings/<%= ListData._id %>/reviews" class="mb-4">
+            <div class="mb-3">
+              <label class="form-label fw-bold">Rating</label>
+              <div id="starRating" class="d-flex gap-2">
+                <% for (let i = 1; i <= 5; i++) { %>
+                  <input type="radio" id="star<%= i %>" name="review[rating]" value="<%= i %>" class="d-none">
+                  <label for="star<%= i %>" class="star-label" style="cursor:pointer; font-size: 28px; color: #ffc107;">
+                    <i class="far fa-star" data-rating="<%= i %>"></i>
+                  </label>
+                <% } %>
+              </div>
+              <small id="ratingText" class="text-muted d-block mt-2">Click to rate</small>
+            </div>
+            <div class="mb-3">
+              <textarea name="review[comment]" class="form-control rounded-3" rows="3" placeholder="Your experience..." required></textarea>
+            </div>
+            <button class="btn btn-primary rounded-pill"><i class="fas fa-paper-plane me-2"></i>Submit</button>
+          </form>
+          <% } else { %>
+            <div class="alert alert-info rounded-3">Please <a href="/login" class="text-decoration-underline fw-bold">log in</a> to leave a review.</div>
+          <% } %>
+
+          <!-- Display Reviews -->
+          <% if (ListData.reviews.length > 0) { %>
+            <% ListData.reviews.forEach(review => { %>
+              <div class="bg-light rounded-3 p-3 mb-3 position-relative">
+                <div class="d-flex justify-content-between">
+                  <div>
+                    <% for (let i = 0; i < 5; i++) { %>
+                      <i class="<%= i < review.rating ? 'fas' : 'far' %> fa-star <%= i < review.rating ? 'text-warning' : 'text-muted' %>"></i>
                     <% } %>
+                    <strong>(<%= review.rating %>/5)</strong>
                   </div>
-                  <div class="rating-text mt-2">
-                    <span id="ratingText" class="text-white-50 small">Click to rate</span>
-                  </div>
+                  <small class="text-muted"><i class="far fa-calendar-alt me-1"></i>Recently</small>
                 </div>
-                <div class="mb-3">
-                  <label for="comment" class="form-label fw-bold text-white">Your Experience</label>
-                  <textarea name="review[comment]" id="comment" cols="30" rows="4" 
-                           class="form-control border-0 rounded-3" 
-                           placeholder="Share your experience staying here..." required></textarea>
-                </div>
-                <button class="btn btn-light btn-lg px-4 rounded-pill">
-                  <i class="fas fa-paper-plane me-2"></i>Submit Review
-                </button>
-              </form>
-            </div>
-          <% } else { %>
-            <div class="alert alert-info border-0 rounded-3 mb-4" style="background: linear-gradient(135deg, #74b9ff, #0984e3);">
-              <div class="text-white">
-                <i class="fas fa-info-circle me-2"></i> 
-                Please <a href="/login" class="text-white fw-bold text-decoration-underline">log in</a> to leave a review.
+                <p class="fst-italic my-2">"<%= review.comment %>"</p>
+                <% if (currentUser && currentUser._id.equals(review.author)) { %>
+                  <form method="POST" action="/Listings/<%= ListData._id %>/reviews/<%= review._id %>?_method=DELETE" class="position-absolute top-0 end-0 m-2">
+                    <button class="btn btn-sm btn-outline-danger rounded-pill"><i class="fas fa-trash"></i></button>
+                  </form>
+                <% } %>
               </div>
+            <% }) %>
+          <% } else { %>
+            <div class="text-center text-muted py-4">
+              <i class="far fa-comment-dots fa-2x mb-2"></i><br>
+              No reviews yet.
             </div>
           <% } %>
+        </section>
 
-          <% if(ListData.reviews.length > 0) { %>
-            <div class="reviews-grid">
-              <% ListData.reviews.forEach(review => { %>
-                <div class="review-item bg-light rounded-3 p-4 mb-3 position-relative">
-                  <div class="review-header d-flex justify-content-between align-items-center mb-3">
-                    <div class="review-rating">
-                      <% for(let i = 0; i < review.rating; i++) { %>
-                        <i class="fas fa-star text-warning"></i>
-                      <% } %>
-                      <% for(let i = review.rating; i < 5; i++) { %>
-                        <i class="far fa-star text-muted"></i>
-                      <% } %>
-                      <span class="ms-2 fw-bold">(<%= review.rating %>/5)</span>
-                    </div>
-                    <small class="text-muted">
-                      <i class="far fa-calendar-alt me-1"></i> Recently
-                    </small>
-                  </div>
-                  <div class="reviewer mb-3 d-flex align-items-center">
-                    <div class="reviewer-avatar bg-primary text-white rounded-circle d-flex align-items-center justify-content-center me-2" 
-                         style="width: 40px; height: 40px;">
-                      <i class="fas fa-user"></i>
-                    </div>
-                    <span class="fw-semibold">Guest</span>
-                  </div>
-                  <blockquote class="review-comment mb-0 fst-italic">
-                    "<%= review.comment %>"
-                  </blockquote>
-                  
-                  <% if(currentUser && currentUser._id.equals(review.author)) { %>
-                    <form method="POST" action="/Listings/<%= ListData._id %>/reviews/<%= review._id %>?_method=DELETE" 
-                          class="position-absolute top-0 end-0 m-3">
-                      <button class="btn btn-sm btn-outline-danger rounded-pill">
-                        <i class="fas fa-trash me-1"></i>Delete
-                      </button>
-                    </form>
-                  <% } %>
-                </div>
-              <% }) %>
-            </div>
-          <% } else { %>
-            <div class="no-reviews text-center py-5">
-              <div class="no-reviews-icon mb-3">
-                <i class="far fa-comment-dots fa-4x text-muted opacity-50"></i>
-              </div>
-              <h5 class="text-muted mb-2">No reviews yet</h5>
-              <p class="text-muted">Be the first to share your experience!</p>
-            </div>
-          <% } %>
-        </div>
       </div>
 
       <!-- Sidebar -->
       <div class="col-lg-4">
         <!-- Booking Card -->
-        <div class="booking-card bg-white rounded-4 shadow-lg sticky-top mb-4" style="top: 2rem;">
-          <div class="card-body p-4">
-            <div class="price-section text-center mb-4 py-3 border-bottom">
-              <div class="price-display">
-                <span class="display-5 fw-bold text-primary">₹<%= ListData.price.toLocaleString("en-IN") %></span>
-                <span class="fs-5 text-muted">/night</span>
-              </div>
-            </div>
-            
-            <div class="booking-actions mb-4">
-  <div class="d-grid gap-3">
-    <form action="/checkout" method="GET">
-      <button type="submit" class="btn btn-primary btn-lg rounded-pill py-3 fw-bold"
-              style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border: none;">
-        <i class="fas fa-calendar-check me-2"></i>Reserve Now
-      </button>
-    </form>
-    <form action="/Listings/<%= ListData._id %>/wishlist" method="POST">
-      <button class="btn <%= isInWishlist ? 'btn-success' : 'btn-outline-secondary' %> btn-lg rounded-pill py-2 fw-semibold">
-        <i class="far fa-heart me-2"></i><%= isInWishlist ? 'Remove from Wishlist' : 'Add to Wishlist' %>
-      </button>
-    </form>
-  </div>
-</div>
-
-
-            <div class="listing-features">
-              <div class="feature-item d-flex align-items-center p-3 mb-3 bg-light rounded-3">
-                <div class="feature-icon bg-primary text-white rounded-circle d-flex align-items-center justify-content-center me-3">
-                  <i class="fas fa-map-marked-alt"></i>
-                </div>
-                <div>
-                  <h6 class="mb-1 fw-bold">Prime Location</h6>
-                  <p class="mb-0 text-muted small"><%= ListData.location %>, <%= ListData.country %></p>
-                </div>
-              </div>
-
-              <div class="feature-item d-flex align-items-center p-3 mb-3 bg-light rounded-3">
-                <div class="feature-icon bg-success text-white rounded-circle d-flex align-items-center justify-content-center me-3">
-                  <i class="fas fa-shield-alt"></i>
-                </div>
-                <div>
-                  <h6 class="mb-1 fw-bold">Safe Booking</h6>
-                  <p class="mb-0 text-muted small">24/7 Support & Secure Payments</p>
-                </div>
-              </div>
-            </div>
+        <div class="bg-white rounded-4 shadow-lg sticky-top p-4 mb-4" style="top: 2rem;">
+          <div class="text-center border-bottom pb-3 mb-3">
+            <h4 class="text-primary fw-bold">₹<%= ListData.price.toLocaleString("en-IN") %></h4>
+            <small class="text-muted">per night</small>
           </div>
+          <form action="/checkout" method="GET" class="d-grid gap-3">
+            <button class="btn btn-primary rounded-pill py-2 fw-bold"><i class="fas fa-calendar-check me-2"></i>Reserve</button>
+          </form>
+          <form action="/Listings/<%= ListData._id %>/wishlist" method="POST" class="mt-2">
+            <button class="btn <%= isInWishlist ? 'btn-success' : 'btn-outline-secondary' %> rounded-pill w-100 fw-semibold">
+              <i class="far fa-heart me-2"></i><%= isInWishlist ? 'Remove' : 'Add to Wishlist' %>
+            </button>
+          </form>
         </div>
-        
-        <!-- Owner Actions -->
+
+        <!-- Owner Controls -->
         <% if(currentUser && currentUser._id.equals(ListData.owner._id)) { %>
-          <div class="owner-panel bg-white rounded-4 shadow-sm">
-            <div class="card-header bg-gradient text-white p-4 rounded-top-4">
-              <h5 class="mb-0 fw-bold">
-                <i class="fas fa-cog me-2"></i>Manage Listing
-              </h5>
-            </div>
-            <div class="card-body p-4">
-              <div class="d-grid gap-3">
-                <a href="/Listings/<%= ListData._id %>/edit" class="btn btn-warning btn-lg rounded-pill fw-semibold">
-                  <i class="fas fa-edit me-2"></i>Edit Listing
-                </a>
-                <form method="POST" action="/Listings/<%= ListData._id %>?_method=DELETE">
-                  <button type="submit" class="btn btn-danger btn-lg w-100 rounded-pill fw-semibold">
-                    <i class="fas fa-trash-alt me-2"></i>Delete Listing
-                  </button>
-                </form>
-              </div>
-            </div>
+          <div class="bg-white rounded-4 shadow-sm p-4">
+            <h5 class="fw-bold mb-3"><i class="fas fa-cog me-2"></i>Manage</h5>
+            <a href="/Listings/<%= ListData._id %>/edit" class="btn btn-warning w-100 rounded-pill mb-2"><i class="fas fa-edit me-2"></i>Edit</a>
+            <form method="POST" action="/Listings/<%= ListData._id %>?_method=DELETE">
+              <button class="btn btn-danger w-100 rounded-pill"><i class="fas fa-trash-alt me-2"></i>Delete</button>
+            </form>
           </div>
         <% } %>
       </div>
     </div>
   </div>
 
-  <!-- Map Section -->
-  <div class="map-section bg-light py-5 mt-5">
+  <!-- Map -->
+  <div class="bg-light py-5">
     <div class="container">
-      <div class="section-header text-center mb-4">
-        <h3 class="fw-bold mb-2">
-          <i class="fas fa-map-marker-alt text-primary me-3"></i>Location
-        </h3>
-        <div class="accent-line bg-primary rounded mx-auto"></div>
-      </div>
-      <div id="map" class="rounded-4 shadow-lg" 
-           data-location="<%= ListData.location %>, <%= ListData.country %>"></div>
+      <h3 class="text-center fw-bold mb-3"><i class="fas fa-map-marker-alt text-primary me-2"></i>Location</h3>
+      <div id="map" class="rounded-4 shadow-sm" data-location="<%= ListData.location %>, <%= ListData.country %>"></div>
     </div>
   </div>
-  
-  <!-- Related Listings Section -->
+
+  <!-- Related Listings -->
   <% if (relatedListings && relatedListings.length > 0) { %>
-    <div class="related-section py-5">
+    <section class="py-5">
       <div class="container">
-        <div class="section-header text-center mb-5">
-          <h3 class="fw-bold mb-2">You might also like</h3>
-          <div class="accent-line bg-primary rounded mx-auto"></div>
-        </div>
+        <h3 class="text-center fw-bold mb-4">You might also like</h3>
         <div class="row g-4">
           <% relatedListings.forEach(listing => { %>
             <div class="col-md-6 col-lg-4">
               <a href="/Listings/<%= listing._id %>" class="text-decoration-none">
-                <div class="related-card bg-white rounded-4 shadow-sm overflow-hidden h-100 position-relative">
-                  <div class="card-image-container position-relative overflow-hidden">
-                    <img src="<%= listing.image && listing.image.url ? listing.image.url : '/images/default-listing.jpg' %>" 
-                         class="card-img-top transition-transform" alt="<%= listing.title %>">
-                    <div class="image-overlay position-absolute top-0 start-0 w-100 h-100 bg-dark opacity-0 transition-opacity"></div>
-                  </div>
-                  <div class="card-body p-4">
-                    <h5 class="card-title fw-bold text-dark mb-2"><%= listing.title %></h5>
-                    <p class="card-text mb-2 text-muted">
-                      <i class="fas fa-map-marker-alt me-2 text-primary"></i><%= listing.location %>, <%= listing.country %>
-                    </p>
-                    <div class="price-tag">
-                      <span class="fw-bold text-primary fs-5">₹<%= listing.price.toLocaleString("en-IN") %></span>
-                      <span class="text-muted"> / night</span>
-                    </div>
+                <div class="bg-white rounded-4 shadow-sm h-100 overflow-hidden">
+                  <img src="<%= listing.image?.url || '/images/default-listing.jpg' %>" class="w-100" style="height: 200px; object-fit: cover;" />
+                  <div class="p-3">
+                    <h5 class="text-dark fw-bold"><%= listing.title %></h5>
+                    <p class="text-muted small mb-1"><i class="fas fa-map-marker-alt me-1 text-primary"></i><%= listing.location %>, <%= listing.country %></p>
+                    <div class="text-primary fw-bold">₹<%= listing.price.toLocaleString("en-IN") %> <small class="text-muted">/night</small></div>
                   </div>
                 </div>
               </a>
@@ -290,80 +154,42 @@
           <% }) %>
         </div>
       </div>
-    </div>
+    </section>
   <% } %>
+
 </div>
 
+<!-- Rating Script -->
 <script>
-document.addEventListener('DOMContentLoaded', function() {
-    const starRating = document.getElementById('starRating');
-    const ratingText = document.getElementById('ratingText');
-    const stars = starRating.querySelectorAll('i');
-    const inputs = starRating.querySelectorAll('input[type="radio"]');
-    
-    const ratingMessages = {
-        1: "Poor - Needs improvement",
-        2: "Fair - Below expectations", 
-        3: "Good - Meets expectations",
-        4: "Very Good - Above expectations",
-        5: "Excellent - Outstanding experience"
-    };
-    
-    // Add click event to each star
-    stars.forEach((star, index) => {
-        const rating = parseInt(star.getAttribute('data-rating'));
-        
-        star.addEventListener('click', function() {
-            // Check the corresponding radio input
-            document.getElementById('star' + rating).checked = true;
-            
-            // Update star display
-            updateStarDisplay(rating);
-            
-            // Update rating text
-            ratingText.textContent = `${rating} star${rating > 1 ? 's' : ''} - ${ratingMessages[rating]}`;
-        });
-        
-        // Add hover effect
-        star.addEventListener('mouseenter', function() {
-            updateStarDisplay(rating, true);
-            ratingText.textContent = `${rating} star${rating > 1 ? 's' : ''} - ${ratingMessages[rating]}`;
-        });
-    });
-    
-    // Reset to selected rating on mouse leave
-    starRating.addEventListener('mouseleave', function() {
-        const checkedInput = starRating.querySelector('input[type="radio"]:checked');
-        if (checkedInput) {
-            const selectedRating = parseInt(checkedInput.value);
-            updateStarDisplay(selectedRating);
-            ratingText.textContent = `${selectedRating} star${selectedRating > 1 ? 's' : ''} - ${ratingMessages[selectedRating]}`;
-        } else {
-            updateStarDisplay(0);
-            ratingText.textContent = "Click to rate";
-        }
-    });
-    
-    function updateStarDisplay(rating, isHover = false) {
-        stars.forEach((star, index) => {
-            const starRating = parseInt(star.getAttribute('data-rating'));
-            const starIcon = star;
-            
-            if (starRating <= rating) {
-                starIcon.className = 'fas fa-star';
-                starIcon.style.color = isHover ? '#ffed4e' : '#ffc107';
-                if (isHover) {
-                    starIcon.parentElement.style.transform = 'scale(1.1)';
-                }
-            } else {
-                starIcon.className = 'far fa-star';
-                starIcon.style.color = '#ffc107';
-                if (isHover) {
-                    starIcon.parentElement.style.transform = 'scale(1)';
-                }
-            }
-        });
-    }
-});
+document.addEventListener('DOMContentLoaded', () => {
+  const starRating = document.getElementById('starRating');
+  const ratingText = document.getElementById('ratingText');
+  const stars = starRating.querySelectorAll('i');
+  const messages = ["Poor", "Fair", "Good", "Very Good", "Excellent"];
 
+  stars.forEach((star, i) => {
+    const rating = i + 1;
+
+    star.addEventListener('click', () => {
+      document.getElementById('star' + rating).checked = true;
+      updateStars(rating);
+    });
+
+    star.addEventListener('mouseenter', () => updateStars(rating, true));
+  });
+
+  starRating.addEventListener('mouseleave', () => {
+    const selected = starRating.querySelector('input:checked');
+    const rating = selected ? parseInt(selected.value) : 0;
+    updateStars(rating);
+  });
+
+  function updateStars(rating, hover = false) {
+    stars.forEach((s, i) => {
+      s.className = i < rating ? 'fas fa-star' : 'far fa-star';
+      s.style.color = '#ffc107';
+    });
+    ratingText.textContent = rating ? `${rating} - ${messages[rating - 1]}` : 'Click to rate';
+  }
+});
 </script>
