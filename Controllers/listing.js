@@ -52,8 +52,8 @@ module.exports.showRoute = async (req, res, next) => {
 
         let isInWishlist = false;
         if (req.user) {
-            const wishlistItems = await Wishlist.find({ user_id: req.user._id });
-            isInWishlist = wishlistItems.some(item => item.places.some(place => place.place_id === listing._id.toString()));
+            const wishlist = await Wishlist.findOne({ user_id: req.user._id, "places.place_id": listing._id });
+            isInWishlist = !!wishlist;
         }
 
         res.render("listings/show.ejs", {
