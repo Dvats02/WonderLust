@@ -60,6 +60,7 @@ passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
 
 
+
 // Flash + User Middleware
 app.use((req, res, next) => {
     res.locals.success = req.flash("success");
@@ -167,5 +168,5 @@ app.use((err, req, res, next) => {
     res.status(statusCode).render("listings/Error.ejs", { message, statusCode, body: "" });
 });
 
-// Start Server
-app.listen(8080, () => console.log("🚀 Server listening on port 8080"));
+const PORT = process.env.PORT || 8080;
+app.listen(PORT, () => console.log(`🚀 Server listening on port ${PORT}`));
