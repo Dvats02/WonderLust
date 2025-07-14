@@ -1,8 +1,9 @@
+require('dotenv').config();
 const express = require("express");
 const app = express();
 const mongoose = require("mongoose");
 const User = require("./Models/user.js");
-const MongoURL = "mongodb://127.0.0.1:27017/wonderlust";
+const MongoURL = process.env.MONGODB_URL;
 const Listing = require("./Models/listing.js");
 const path = require("path");
 const ejsMate = require("ejs-mate");
@@ -40,7 +41,7 @@ async function main() {
 
 // Session & Auth Setup
 const sessionOptions = {
-    secret: "mysupersecretcode",
+    secret: process.env.SESSION_SECRET,
     resave: false,
     saveUninitialized: true,
     cookie: {
