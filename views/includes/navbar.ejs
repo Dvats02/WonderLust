@@ -22,8 +22,10 @@
   
       <!-- Right Navigation -->
       <div class="d-flex align-items-center">
-        <a href="/Listings/new" class="d-none d-lg-block nav-link px-3 me-3 fw-medium">List your place</a>
-        
+<a href="/Listings/new" class="d-none d-lg-block nav-link px-3 me-3 fw-medium">List your place</a>
+        <button class="btn btn-outline-secondary dark-mode-toggle d-none d-lg-block me-3" id="darkModeToggle">
+          <i class="fas fa-moon"></i>
+        </button>
         <div class="dropdown">
           <button class="btn dropdown-toggle user-menu-btn d-flex align-items-center" type="button" id="userMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
             <i class="fa-solid fa-bars me-2"></i>
@@ -61,7 +63,12 @@
           <a class="nav-link py-2" href="/Listings">Experiences</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link py-2" href="/Listings/new">List your place</a>
+<a class="nav-link py-2" href="/Listings/new">List your place</a>
+        </li>
+        <li class="nav-item">
+          <button class="nav-link btn btn-outline-secondary dark-mode-toggle" id="darkModeToggleMobile">
+            <i class="fas fa-moon"></i> Dark Mode
+          </button>
         </li>
       </ul>
     </div>

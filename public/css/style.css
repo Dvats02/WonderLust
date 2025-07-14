@@ -845,3 +845,76 @@
 .related-listing-card {
     /* Add any specific styles if needed */
 }
+
+/* Dark Mode Styles */
+body.dark-mode {
+  background-color: #222;
+  color: #eee;
+}
+
+body.dark-mode .navbar {
+  background-color: #333;
+  border-bottom-color: #555;
+}
+
+body.dark-mode .nav-link {
+  color: #ccc; /* Slightly lighter than #eee */
+}
+
+body.dark-mode .nav-link:hover {
+  color: #fff; /* White on hover for better visibility */
+}
+
+.navbar .nav-link {
+    color: #333; /* Dark color for light mode */
+}
+
+.navbar .nav-link:hover {
+    color: var(--primary-color);
+}
+
+body.dark-mode .user-menu-btn {
+  background-color: #333;
+  border-color: #555;
+  color: #eee;
+}
+
+body.dark-mode .card {
+  background-color: #333;
+  border-color: #555;
+  color: #eee;
+}
+
+body.dark-mode .content-card {
+  border-color: #555 !important;
+}
+
+body.dark-mode .text-muted {
+  color: #aaa !important;
+}
+
+body.dark-mode .btn-outline-secondary {
+  color: #eee;
+  border-color: #555;
+}
+
+body.dark-mode .btn-outline-secondary:hover {
+  background-color: #555;
+  color: #eee;
+}
+
+body.dark-mode .feature-item {
+  background-color: #444 !important;
+}
+
+body.dark-mode .review-item {
+  background-color: #444 !important;
+}
+
+body.dark-mode .map-section {
+  background-color: #333;
+}
+
+body.dark-mode .owner-panel .card-header {
+  background: linear-gradient(135deg, #ff7675, #d63031) !important;
+}
