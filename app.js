@@ -118,7 +118,8 @@ app.post("/forgot-password", async (req, res) => {
     user.resetTokenExpiry = Date.now() + 3600000;
     await user.save();
 
-    console.log(`🔗 Reset link: http://localhost:8080/reset-password/${token}`);
+    // TODO: Send email with reset link
+    console.log(`🔗 Reset link: http://localhost:${PORT}/reset-password/${token}`);
     req.flash("success", "Reset link sent! Check your email (console here).");
     res.redirect("/login");
 });

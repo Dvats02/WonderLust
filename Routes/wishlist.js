@@ -61,7 +61,7 @@ router.post("/Listings/:listingId/wishlist", isLoggedIn, wrapAsync(async (req, r
 router.get("/wishlist", isLoggedIn, wrapAsync(async (req, res) => {
     const userId = req.user._id;
 
-    const wishlistItems = await Wishlist.find({ user_id: userId }).populate('places');
+    const wishlistItems = await Wishlist.find({ user_id: userId }).populate('places.place_id');
 
     res.render("users/wishlist.ejs", { wishlistItems });
 }));
