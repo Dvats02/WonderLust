@@ -16,6 +16,7 @@ const userSchema = new mongoose.Schema({
         required: true,
         unique: true,
     },
+    googleId: String, // Add googleId field
     resetToken: String,
     resetTokenExpiry: Date,
     wishlist: [{

@@ -9,10 +9,14 @@ const razorpayInstance = new Razorpay({
 });
 
 router.post("/createOrder", async (req, res) => {
-    const amount = req.body.amount || 50000;
+        const amount = req.body.amount; // Amount will now come from the form
+    if (!amount) {
+        return res.status(400).json({ status: "error", message: "Amount is required." });
+    }
+    const finalAmount = amount * 100; // Convert to paisa
 
     const options = {
-        amount: amount,
+        amount: finalAmount,
         currency: "INR",
         receipt: "receipt_order_" + Date.now(),
     };

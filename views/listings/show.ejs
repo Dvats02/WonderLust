@@ -100,9 +100,16 @@
             <h4 class="text-primary fw-bold">₹<%= ListData.price.toLocaleString("en-IN") %></h4>
             <small class="text-muted">per night</small>
           </div>
-          <form action="/checkout" method="GET" class="d-grid gap-3">
-            <button class="btn btn-primary rounded-pill py-2 fw-bold"><i class="fas fa-calendar-check me-2"></i>Reserve</button>
+          <% if (currentUser) { %>
+          <form action="/payment/checkout" method="POST" class="d-grid gap-3">
+            <input type="hidden" name="price" value="<%= ListData.price %>">
+            <button class="btn btn-primary rounded-pill py-2 fw-bold"><i class="fas fa-calendar-check me-2"></i>Reserve Now</button>
           </form>
+          <% } else { %>
+          <form action="/login" method="GET" class="d-grid gap-3">
+            <button class="btn btn-primary rounded-pill py-2 fw-bold"><i class="fas fa-calendar-check me-2"></i>Reserve Now</button>
+          </form>
+          <% } %>
           <form action="/Listings/<%= ListData._id %>/wishlist" method="POST" class="mt-2">
             <button class="btn <%= isInWishlist ? 'btn-success' : 'btn-outline-secondary' %> rounded-pill w-100 fw-semibold">
               <i class="far fa-heart me-2"></i><%= isInWishlist ? 'Remove' : 'Add to Wishlist' %>
