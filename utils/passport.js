@@ -1,7 +1,8 @@
 require('dotenv').config();
 const passport = require('passport');
 const GoogleStrategy = require('passport-google-oauth20').Strategy;
-const User = require('../Models/User');
+const mongoose = require('mongoose'); // Add mongoose import
+const User = mongoose.model('User'); // Get the already compiled User model
 
 passport.serializeUser((user, done) => {
   done(null, user.id);

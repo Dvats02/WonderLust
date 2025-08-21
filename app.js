@@ -17,9 +17,9 @@ const session = require("express-session");
 const flash = require("connect-flash");
 const passport = require("passport");
 const LocalStrategy = require("passport-local");
-const GoogleStrategy = require("passport-google-oauth20").Strategy;
 const crypto = require("crypto");
 const paymentRoutes = require('./Routes/payment.js');
+require('./utils/passport.js'); // Ensure passport configuration is loaded
 
 // Middleware
 app.use(methodOverride("_method"));
@@ -59,40 +59,6 @@ app.use(passport.session());
 passport.use(new LocalStrategy(User.authenticate()));
 passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
-
-passport.use(new GoogleStrategy({
-    clientID: process.env.GOOGLE_CLIENT_ID,
-    clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-    callbackURL: "/auth/google/callback"
-  },
-  async (accessToken, refreshToken, profile, cb) => {
-    try {
-      let user = await User.findOne({ googleId: profile.id });
-
-      if (!user) {
-        // If no user found with googleId, check if a user with this email already exists
-        user = await User.findOne({ email: profile.emails[0].value });
-
-        if (user) {
-          // If user exists with this email, link Google ID
-          user.googleId = profile.id;
-          await user.save();
-        } else {
-          // If no user exists with this email, create a new user
-          user = new User({
-            googleId: profile.id,
-            username: profile.displayName,
-            email: profile.emails[0].value
-          });
-          await user.save();
-        }
-      }
-      cb(null, user);
-    } catch (err) {
-      cb(err, null);
-    }
-  }
-));
 
 app.use((req, res, next) => {
     res.locals.success = req.flash("success");
